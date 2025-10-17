@@ -1,0 +1,129 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Pokemon TCGP Collection</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" fill="outline" color="danger">
+        <ion-icon name="log-out" slot="start"></ion-icon>
+        Logout
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Collection</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Filters -->
+  <ion-card class="filter-card">
+    <ion-card-content>
+      <!-- Search -->
+      <ion-searchbar
+        placeholder="Search cards..."
+        (ionInput)="onSearchChange($event)"
+        [value]="searchTerm">
+      </ion-searchbar>
+
+      <ion-grid>
+        <ion-row>
+          <!-- Expansion Filter -->
+          <ion-col size="6">
+            <ion-select
+              placeholder="All Expansions"
+              (ionChange)="onExpansionChange($event)"
+              [value]="selectedExpansion">
+              <ion-select-option value="">All Expansions</ion-select-option>
+              <ion-select-option *ngFor="let expansion of expansions" [value]="expansion">
+                {{ expansion }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+
+          <!-- View Mode -->
+          <ion-col size="6">
+            <ion-select
+              placeholder="View Mode"
+              (ionChange)="onViewModeChange($event)"
+              [value]="viewMode">
+              <ion-select-option value="all">All Cards</ion-select-option>
+              <ion-select-option value="owned">My Collection</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Cards Grid by Sets -->
+  <div class="cards-container">
+    <div *ngFor="let setGroup of cardsBySet" class="set-section">
+      <!-- Set Header -->
+      <div class="set-header">
+        <h2 class="set-title">{{ setGroup.setName }}</h2>
+        <span class="set-stats">{{ setGroup.cards.length }} cards</span>
+      </div>
+      
+      <!-- Cards Grid (5 per row) -->
+      <div class="cards-grid-5">
+        <div
+          *ngFor="let card of setGroup.cards"
+          class="card-wrapper">
+            <div class="card-item" [class.owned]="isInCollection(card)" [class.not-collected]="!isInCollection(card)">
+            <!-- Card Image -->
+            <div class="card-image-container">
+              <img
+                [src]="card.displayImageUrl"
+                [alt]="card.label.eng"
+                class="card-image"
+                loading="lazy"
+                (error)="onImageError($event)">
+              
+              <!-- Error placeholder -->
+              <div class="card-placeholder" style="display: none;">
+                <div>
+                  <br>
+                  <small>{{ card.label.eng }}</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Info -->
+            <div class="card-info">
+              <h3 class="card-id">{{ card.set }}{{ card.number }} - {{ card.label.eng }}</h3>
+            </div>
+
+            <!-- Quantity Controls -->
+            <div class="quantity-controls">
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="decreaseQuantity(card)"
+                [disabled]="getCardCount(card) === 0">
+                <ion-icon name="remove"></ion-icon>
+              </ion-button>
+              
+              <span class="quantity-number">{{ getCardCount(card) }}</span>
+              
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="addToCollection(card)">
+                <ion-icon name="add"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredCards.length === 0 && !loading" class="empty-state">
+    <ion-icon name="library-outline" size="large"></ion-icon>
+    <h2>No cards found</h2>
+    <p>Try adjusting your search or filters</p>
+  </div>
+</ion-content>

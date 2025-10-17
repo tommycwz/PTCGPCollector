@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Pokemon TCGP Collector
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Pokemon TCGP Collector</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <div class="welcome-content">
+      <ion-icon name="library" size="large" color="primary"></ion-icon>
+      <h1>Welcome to Pokemon TCGP Collector!</h1>
+      <p>Build and manage your Pokemon Trading Card Game Pocket collection.</p>
+      
+      <ion-button expand="block" routerLink="/collection" color="primary">
+        <ion-icon name="albums" slot="start"></ion-icon>
+        View My Collection
+      </ion-button>
+      
+      <div class="features">
+        <h2>Features:</h2>
+        <ul>
+          <li>Browse all available Pokemon cards</li>
+          <li>Track your collection with card counts</li>
+          <li>Search and filter by expansion</li>
+          <li>View collection statistics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ion-content>

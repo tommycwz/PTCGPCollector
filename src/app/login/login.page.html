@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to your Pokemon collection</p>
+      </div>
+
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <ion-item>
+          <ion-label position="stacked">Username</ion-label>
+          <ion-input 
+            type="text" 
+            [(ngModel)]="username" 
+            name="username"
+            required
+            placeholder="Enter your username">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password"
+            required
+            placeholder="Enter your password">
+          </ion-input>
+        </ion-item>
+
+        <ion-button 
+          type="submit" 
+          expand="block" 
+          class="login-button"
+          [disabled]="!loginForm.form.valid">
+          <ion-icon name="log-in" slot="start"></ion-icon>
+          Login
+        </ion-button>
+      </form>
+
+      <div class="login-footer">
+        <p>This is an invite-only private collection app</p>
+      </div>
+    </div>
+  </div>
+</ion-content>
